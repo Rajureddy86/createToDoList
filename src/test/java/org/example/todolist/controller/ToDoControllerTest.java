@@ -71,7 +71,7 @@ public class ToDoControllerTest {
         todo.setDescription("Sample Todo");
         todo.setCompletionStatus(false);
 
-        when(todoRepository.save(any(ToDo.class))).thenReturn(1);
+        when(todoRepository.save(any(ToDo.class))).thenReturn(todo);
 
         mockMvc.perform(post("/todos")
                         .contentType(MediaType.APPLICATION_JSON)

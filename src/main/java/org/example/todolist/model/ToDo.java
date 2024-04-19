@@ -1,6 +1,8 @@
 package org.example.todolist.model;
 
 public class ToDo {
+
+
     private Long id;
     private String description;
     private boolean completionStatus;

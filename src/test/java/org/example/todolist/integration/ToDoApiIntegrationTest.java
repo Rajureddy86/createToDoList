@@ -60,6 +60,27 @@ public class ToDoApiIntegrationTest {
                 .andExpect(jsonPath("$.description", is("Test Todo")));
     }
 
+    @Test
+    public void testGetAndDeleteTodo() throws Exception {
+        String todoJson = "{\"description\":\"Test Todo for GET and DELETE\",\"completionStatus\":false}";
+        MvcResult result = mockMvc.perform(post("/todos")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(todoJson))
+                .andExpect(status().isCreated())
+                .andReturn();
 
+        String responseString = result.getResponse().getContentAsString();
+        Integer createdTodoId = JsonPath.parse(responseString).read("$.id");
+
+        mockMvc.perform(get("/todos/{id}", createdTodoId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(createdTodoId)));
+
+        mockMvc.perform(delete("/todos/{id}", createdTodoId))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/todos/{id}", createdTodoId))
+                .andExpect(status().isNotFound());
+    }
 
 }
